@@ -140,24 +140,34 @@ return {
             initBounds: usig.App.config.initBounds,
             onReady: function() { 
                 inicializar.defer(200, this, [onReady]); // Esto es para que funcione en IE 10
-                var markerId = mapa.addMarker(new usig.Punto(102224.9040681,103284.11371559), true, "Texto de prueba");
-				var markerId2 = mapa.addMarker('LASCANO 3401');
-				var markerId3 = mapa.addMarker('cabildo y juramento');
-				var markerId4 = mapa.addMarker('corrientes 1530', false, 'Teatro Gral. San Martín');
-				
-				// Marcador con icono personalizado 
-				var markerId5 = mapa.addMarker(
-						'perú 652', 
-						false, 
-						'Banco<br/>Footer<br/>Footer<br/>Footer<br/>Footer<br/>Footer',
-						{
-							iconUrl: 'http://servicios.usig.buenosaires.gov.ar/symbols/mapabsas/bancos.png',
+				var markerId1 = mapa.addMarker('CONCORDIA 2501', true, "11.A.Cierre de Aperturas de Servicios Pu",{
+							iconUrl: 'http://servicios.usig.buenosaires.gov.ar/symbols/mapabsas/otros_cortes.png',
 							iconWidth: 41,
 							iconHeight: 41
 							//,offsetX: -20
 							//,offsetY: -20
-						}
-				);
+						});
+				var markerId2 = mapa.addMarker('LASCANO 3401', true, "Calzada",{
+							iconUrl: 'http://servicios.usig.buenosaires.gov.ar/symbols/mapabsas/otros_cortes.png',
+							iconWidth: 41,
+							iconHeight: 41
+							//,offsetX: -20
+							//,offsetY: -20
+						});
+				var markerId3 = mapa.addMarker('HUMBOLDT 2201', true, "11.A.Cierre de Aperturas de Servicios Pu",{
+							iconUrl: 'http://servicios.usig.buenosaires.gov.ar/symbols/mapabsas/otros_cortes.png',
+							iconWidth: 41,
+							iconHeight: 41
+							//,offsetX: -20
+							//,offsetY: -20
+						});
+				var markerId4 = mapa.addMarker('TREVERIS 2501', false, 'Prov. Coloc. Mat. Asf. Incluye limpieza',{
+							iconUrl: 'http://servicios.usig.buenosaires.gov.ar/symbols/mapabsas/otros_cortes.png',
+							iconWidth: 41,
+							iconHeight: 41
+							//,offsetX: -20
+							//,offsetY: -20
+						});
             }
         };
         
