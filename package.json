@@ -1,0 +1,26 @@
+{
+  "name": "mapa-obras-usig",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "bl": "^1.0.0",
+    "express": "^4.13.3",
+    "save": "^2.1.1",
+    "through2-map": "^2.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gcba/prueba-mapa-usig.git"
+  },
+  "author": "LabGCBA",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gcba/prueba-mapa-usig/issues"
+  },
+  "homepage": "https://github.com/gcba/prueba-mapa-usig"
+}
