@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title>USIG - Mapa Interactivo de Buenos Aires</title>
+	<link rel="stylesheet" type="text/css" href="public/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="public/css/main.css" />
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+	<script src="public/js/usig.MapaInteractivo.min.js" type="text/javascript"></script> 
+	<script src="public/js/usig.Punto.min.js" type="text/javascript"></script> 
+	<script src="public/js/mantenimiento.js" type="text/javascript"></script>
+	<!-- <script src="js/filtrosApp.js" type="text/javascript"></script> -->
+</head>
+<body>
+	<div id="mapa"></div>
+
+	<script type="text/template" id="template-panel-informacion">
+	<div id="panel-informacion" class="informacion">
+		<div class="content">
+			<form role="form">
+				<div class="form-group">
+					<div class="checkbox">
+	  					<label>
+	    					<input type="checkbox" value="1" name="obras" checked>
+	    					Baches
+	  					</label>
+					</div>
+					<div class="checkbox">
+	  					<label>
+	    					<input type="checkbox" value="2" name="obras" checked>
+	    					Arboles caidos
+	  					</label>
+					</div>
+					<div class="checkbox">
+	  					<label>
+	    					<input type="checkbox" value="3" name="obras" checked>
+	    					Obra pública
+	  					</label>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	</script>
+
+	<script type="text/javascript">
+		// Definicion del namespace
+		var usig = usig || {};
+		usig.App = usig.App || {};
+
+		usig.App.config = {
+			server_url: '//epok.buenosaires.gob.ar/',
+			symbols_url: '//static.mapa.buenosaires.gob.ar/symbols/',
+			backgrounds_url: '//static.mapa.buenosaires.gob.ar/images/markers/fondos/',
+			baseLayer: "mapabsas_informacion_basica"
+		};
+
+		$(document).ready(usig.App.init);
+	</script>
+
+</body>
+</html>
