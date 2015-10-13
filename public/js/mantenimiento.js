@@ -2,163 +2,136 @@
 var usig = usig || {};
 
 usig.App = (function() {
-var mapa = null, layers = [];
+    var mapa = null, layers = [];
 
-function redimensionarMapa() {
-    $('#mapa').css('width', $(window).width()).css('height', $(window).height()).css('margin', 0);        
-    if (mapa) {
-        $('.olControlPanZoomBarUSIG').hide();
-        mapa.updateSize();            
+    function redimensionarMapa() {
+        $('#mapa').css('width', $(window).width()).css('height', $(window).height()).css('margin', 0);        
+        if (mapa) {
+            $('.olControlPanZoomBarUSIG').hide();
+            mapa.updateSize();            
+        }
     }
-}
 
-function reposicionarControles() {
-    $('.olControlPanZoomBarUSIG').css('left', 'auto').css('top', '15px').css('right', '15px').css('bottom', 'auto').show();
-    $('#panel-informacion').css('height', '60%');
-}
+    function reposicionarControles() {
+        $('.olControlPanZoomBarUSIG').css('left', 'auto').css('top', '15px').css('right', '15px').css('bottom', 'auto').show();
+        $('#panel-informacion').css('height', '60%');
+    }
 
-function crearPanelInfo() {
-    // Panel de informacion
-    $('#mapa > .olMapViewport').append($('#template-panel-informacion').html());
-}
+    function crearPanelInfo() {
+        // Panel de informacion
+        $('#mapa > .olMapViewport').append($('#template-panel-informacion').html());
+    }
 
-function clickHandler(e, popup) {
-	if (popup) {
-		popup.contentDiv.innerHTML = "<h3>" + e.feature.attributes['Nombre'] +"</h3><p class='indicator'>Buscando informaciÃ³n...</p>";
-		popup.updateSize();
-		popup.show();
-		$.ajax({
-			url: "//epok.buenosaires.gob.ar/getObjectContent/?id="+e.feature.attributes['Id'],
-			dataType: 'jsonp',
-			success: function(data) {
-				if (popup != null && data.id==e.feature.attributes['Id']) {
-					$div = $(popup.contentDiv);
-        			$('p.indicator', $div).remove();
-        			var content = '<ul style="width: 300px; list-style-type: none; margin: 5px 0; padding: 0;">';
-        			$.each(data.contenido, function(k, v) {
-        				if (v.nombreId != 'nombre' && v.valor != '') {
-        					content+='<li><b>'+v.nombre+'</b>: '+v.valor+'</li>';
-        				}
-        			});
-        			content+='</ul>';
-        			$div.append(content);
-        			popup.updateSize();
-				}
-			},
-			error: function(e) {
-				usig.debug(e);
-			}
-		});
-	}
-}    
+    function clickHandler(e, popup) {
+    	if (popup) {
+    		$div = $(popup.contentDiv);
+            var content = '<ul style="width: 300px; list-style-type: none; margin: 5px 0; padding: 0;">';
+            $.each(e.feature, function(k, v) {
+                if (v.nombreId != 'Nombre' && v.valor != '') {
+                    content+='<li><b>'+v.nombre+'</b>: '+v.valor+'</li>';
+                }
+            });
+            content+='</ul>';
+            $div.append(content);
+            popup.updateSize();
+    		popup.show();
+    	}
+    }    
 
-// function removeLayers() {
-// 	if (layers.length > 0) {
-// 		for(var i=0,l=layers.length;i<l;i++) {
-//     		try {
-//     			mapa.removeLayer(layers[i]);
-//     		} catch(e) {
-//     			console.log(e);
-//     		}
-// 		}
-// 		layers = [];
-// 	}    	
-// }
+    function removeLayers() {
+    	if (layers.length > 0) {
+    		for(var i=0,l=layers.length;i<l;i++) {
+        		try {
+        			mapa.removeLayer(layers[i]);
+        		} catch(e) {
+        			console.log(e);
+        		}
+    		}
+    		layers = [];
+    	}    	
+    }
 
-// function cargarLayers() {
-// 	var actividades = $("input[name=actividades]:checked"),
-// 		publico = $('#publico').val(),
-// 		sector = $('#sector').val();
-// 	removeLayers();
-// 	actividades.each(function(k, v){
-// 		var icon = usig.App.config.layers[$(this).val()].icon,
-// 			bgIndex = parseInt(usig.App.config.layers[$(this).val()].bg);
-// 		layers.push(mapa.addVectorLayer('Dependencias Culturales', { 
-// 		  url: "//epok.buenosaires.gob.ar/getGeoLayer/?categoria=dependencias_culturales&formato=geojson&publico="+publico+"&actividades="+$(this).val()+"&sector="+sector,
-// 		  format: 'geojson',
-// 		  symbolizer: {
-// 			    externalGraphic: usig.App.config.symbols_url+(usig.App.config.inverseIcons.indexOf(bgIndex)>=0?'n/':'b/')+icon+'.png',
-// 			    backgroundGraphic: usig.App.config.backgrounds_url+bgIndex+'.png',
-// 			    pointRadius: usig.App.config.pointRadius
-// 			  },
-// 		  minPointRadius: usig.App.config.minPointRadius,
-// 		  popup: true,
-// 		  onClick: clickHandler
-// 		}));
-// 	});
-// }
+    function cargarLayers() {
+    	var tiposDeObra = $("input[name=tipo_obra]:checked"),
+    		status = $('#status').val();
+    	removeLayers();
 
-function stopPropagation(ev) {
-    if (ev.stopPropagation) {
-        ev.stopPropagation();
-    } else {
-        ev.cancelBubble = true;
-    }            
-}
+        console.log("por cargar layers");
 
-function inicializar(onReady) {        
+    	tiposDeObra.each(function(k, v){
+    		var icon = usig.App.config.layers[$(this).val()].icon,
+    			bgIndex = parseInt(usig.App.config.layers[$(this).val()].bg);
+            layers.push(mapa.addVectorLayer('Obras', { 
+    		  url: window.location.href + "ordenes?tipo_obra="+ $(this).val(),
+    		  format: 'geojson',
+    		  symbolizer: {
+    			    externalGraphic: usig.App.config.symbols_url+'n/'+icon+'.png',
+    			    backgroundGraphic: usig.App.config.backgrounds_url+bgIndex+'.png',
+    			    pointRadius: usig.App.config.pointRadius
+    			  },
+    		  minPointRadius: usig.App.config.minPointRadius,
+    		  popup: true,
+    		  onClick: clickHandler
+    		}));
+    	});
+    }
 
-    // Creacion de los elementos flotantes sobre el mapa
-    crearPanelInfo();            
+    function stopPropagation(ev) {
+        if (ev.stopPropagation) {
+            ev.stopPropagation();
+        } else {
+            ev.cancelBubble = true;
+        }            
+    }
 
-    // Cambia la ubicaciÃ³n del control de zoom y agranda el panel de info
-    reposicionarControles();
+    function inicializar(onReady) {        
 
-    $(window).on('resize', function() {
-        redimensionarMapa();
-        reposicionarControles.defer(200);
-    });
-    
-    // Esto es para evitar que los clicks sobre los elementos flotantes sobre el
-    // mapa sean capturados por el mapa y generen movimientos no previstos        
-    $('#b, #mapSelector, #panel-informacion, .selectboxit-container')
-        .on('mousedown', stopPropagation)
-        .on('dblclick', stopPropagation);
-    
-    // $("input[name=actividades], #publico, #sector").change(cargarLayers);
-    
-    // cargarLayers();
-}
+        // Creacion de los elementos flotantes sobre el mapa
+        crearPanelInfo();            
 
-return {
-	init: function(onReady) { 
-        // Elimino el "Cargando..."
-        $('#mapa').empty();
+        // Cambia la ubicaciÃ³n del control de zoom y agranda el panel de info
+        reposicionarControles();
 
-        // El div del mapa tiene que ocupar toda la ventana
-        redimensionarMapa();
-
-        var mapOptions = {
-            divId: 'mapa',
-        	trackVisits: false,
-        	includeToolbar: false,
-        	zoomBar: true,
-        	includeMapSwitcher: false,
-        	goToZoomLevel: 7,
-            baseLayer: usig.App.config.baseLayer,
-            // Le cambio el extent inicial para que la Ciudad no quede tapada por el panel de info
-            initBounds: usig.App.config.initBounds,
-            onReady: function() { 
-                inicializar.defer(200, this, [onReady]); // Esto es para que funcione en IE 10
-				// TODO: loop por todos los markers que llegan desde la base!
-                var markerId1 = mapa.addMarker('CONCORDIA 2501', true, "11.A.Cierre de Aperturas de Servicios Pu",{
-							iconUrl: 'http://servicios.usig.buenosaires.gov.ar/symbols/mapabsas/otros_cortes.png',
-							iconWidth: 41,
-							iconHeight: 41
-							//,offsetX: -20
-							//,offsetY: -20
-						});
-				var markerId2 = mapa.addMarker('LASCANO 3401', true, "Calzada",{
-							iconUrl: 'http://servicios.usig.buenosaires.gov.ar/symbols/mapabsas/otros_cortes.png',
-							iconWidth: 41,
-							iconHeight: 41
-							//,offsetX: -20
-							//,offsetY: -20
-						});
-            }
-        };
+        $(window).on('resize', function() {
+            redimensionarMapa();
+            reposicionarControles.defer(200);
+        });
         
-        mapa = new usig.MapaInteractivo(mapOptions.divId, mapOptions);
-	}
-};
+        // Esto es para evitar que los clicks sobre los elementos flotantes sobre el
+        // mapa sean capturados por el mapa y generen movimientos no previstos        
+        $('#b, #mapSelector, #panel-informacion, .selectboxit-container')
+            .on('mousedown', stopPropagation)
+            .on('dblclick', stopPropagation);
+        
+        $("input[name=tipo_obra], #status").change(cargarLayers);
+        
+        cargarLayers();
+    }
+
+    return {
+    	init: function(onReady) { 
+            // Elimino el "Cargando..."
+            $('#mapa').empty();
+
+            // El div del mapa tiene que ocupar toda la ventana
+            redimensionarMapa();
+
+            var mapOptions = {
+                divId: 'mapa',
+            	trackVisits: false,
+            	includeToolbar: false,
+            	zoomBar: true,
+            	includeMapSwitcher: false,
+            	goToZoomLevel: 7,
+                baseLayer: usig.App.config.baseLayer,
+                // Le cambio el extent inicial para que la Ciudad no quede tapada por el panel de info
+                initBounds: usig.App.config.initBounds,
+                onReady: function() { 
+                    inicializar.defer(200, this, [onReady]); // Esto es para que funcione en IE 10
+                }
+            };
+            
+            mapa = new usig.MapaInteractivo(mapOptions.divId, mapOptions);
+    	}
+    };
 })();

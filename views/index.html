@@ -1,0 +1,60 @@
+<div id="mapa"><p class="indicator">Cargando...</p></div>
+
+<script type="text/template" id="template-panel-informacion">
+<div id="panel-informacion" class="informacion">
+    <div class="content">
+        <form role="form">
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="1" name="tipo_obra" checked>
+                        Acera
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="2" name="tipo_obra" checked>
+                        Calzada
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select class="form-control" id="status">
+                    <option>Cualquiera</option>
+                    <option value="1">Aceptado</option>
+                    <option value="2">Verificado</option>
+                    <option value="3">En proceso</option>
+                    <option value="4">Terminada</option>
+                </select>
+            </div>
+        </form>
+    </div>
+</div>
+</script>
+
+<script type="text/javascript">
+
+// Definicion del namespace
+var usig = usig || {};
+usig.App = usig.App || {};
+
+usig.App.config = {
+    server_url: '//epok.buenosaires.gob.ar/',
+    symbols_url: '//static.mapa.buenosaires.gob.ar/symbols/',
+    backgrounds_url: '//static.mapa.buenosaires.gob.ar/images/markers/fondos/',
+    baseLayer: "mapabsas_informacion_basica",
+    initBounds: [85000,96750,112000,106750],
+    pointRadius: 18,
+    minPointRadius: 11,
+    layers: {
+        '1': { name: 'Acera', icon: 'obras', bg: '1'},
+        '2': { name: 'Calzada', icon: 'obras', bg: '2'}
+    }
+};
+
+</script>
+
+<script type="text/javascript">
+$(document).ready(usig.App.init);
+</script>
