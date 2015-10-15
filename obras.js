@@ -1,14 +1,16 @@
 module.exports = {
   getObras: function(connection, tipo_obra, status, callback) {
     var query_obra;
-    var query_status = "status_usuario = 'TFIN'";
+    var query_status = "";
     switch (tipo_obra) {
       case "1":
         query_obra = "clase_orden = 'ACME' || clase_orden = 'ACRE'";
+        break;
       case "2":
         query_obra = "clase_orden = 'CAME' || clase_orden = 'CARE'";
+        break;
     }
-    query_string = "SELECT * FROM ordenes WHERE " + query_obra + " AND " + query_status;
+    query_string = "SELECT * FROM ordenes WHERE " + query_obra;
     console.log(query_string)
 
     connection.query(query_string, function(err,rows){
@@ -34,9 +36,11 @@ module.exports = {
             "coordinates": [rows[i]["geo_x"], rows[i]["geo_y"]]
           },
           "properties": {
-            "nombre": rows[i]["nombre"],
             "clase_orden": rows[i]["clase_orden"],
-            "clave_modelo": rows[i]["clave_modelo"]
+            "clave_modelo": rows[i]["clave_modelo"],
+            "fecha_inicio": rows[i]["fecha_ini_extremo"],
+            "fecha_fin": rows[i]["fecha_fin_extremo"],
+            "status": rows[i]["status_usuario"]
           }
         }
         geojson['features'].push(newFeature);

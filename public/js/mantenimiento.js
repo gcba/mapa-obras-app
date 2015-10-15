@@ -26,10 +26,11 @@ usig.App = (function() {
     	if (popup) {
     		$div = $(popup.contentDiv);
             var content = '<ul style="width: 300px; list-style-type: none; margin: 5px 0; padding: 0;">';
-            $.each(e.feature, function(k, v) {
-                if (v.nombreId != 'Nombre' && v.valor != '') {
-                    content+='<li><b>'+v.nombre+'</b>: '+v.valor+'</li>';
+            $.each(e.feature.attributes, function(k, v) {
+                if (k == "fecha_inicio" || k == "fecha_fin") {
+                    v = v.toString().split("T")[0]
                 }
+                content+='<li><b>'+k+'</b>: '+v+'</li>';
             });
             content+='</ul>';
             $div.append(content);
@@ -55,8 +56,6 @@ usig.App = (function() {
     	var tiposDeObra = $("input[name=tipo_obra]:checked"),
     		status = $('#status').val();
     	removeLayers();
-
-        console.log("por cargar layers");
 
     	tiposDeObra.each(function(k, v){
     		var icon = usig.App.config.layers[$(this).val()].icon,
