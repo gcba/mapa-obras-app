@@ -27,7 +27,7 @@ usig.App = (function() {
     		$div = $(popup.contentDiv);
             var content = '<ul style="width: 300px; list-style-type: none; margin: 5px 0; padding: 0;">';
             $.each(e.feature.attributes, function(k, v) {
-                if (k == "fecha_inicio" || k == "fecha_fin") {
+                if ((k == "fecha_inicio" || k == "fecha_fin") && v != null) {
                     v = v.toString().split("T")[0]
                 }
                 content+='<li><b>'+k+'</b>: '+v+'</li>';
