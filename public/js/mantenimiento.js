@@ -14,12 +14,12 @@ usig.App = (function() {
 
     function reposicionarControles() {
         $('.olControlPanZoomBarUSIG').css('left', 'auto').css('top', '15px').css('right', '15px').css('bottom', 'auto').show();
-        $('#panel-informacion').css('height', '60%');
+        $('#panel-informacion').css('height', '80%');
     }
 
     function crearPanelInfo() {
         // Panel de informacion
-        $('#mapa > .olMapViewport').append($('#template-panel-informacion').html());
+        $("#panel-informacion").show();
     }
 
     function clickHandler(e, popup) {

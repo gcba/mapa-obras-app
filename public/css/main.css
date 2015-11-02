@@ -35,7 +35,7 @@ a:hover {
     top: 15px;
     left: 15px;
     height: 95%;
-    width: 300px;
+    width: 350px;
     border: 1px solid #ccc;
     border-radius: 4px;
     background: #fff;
@@ -43,6 +43,7 @@ a:hover {
     display: block;
     z-index: 1200;
     overflow: hidden;
+    display: none;
 }
 
 
