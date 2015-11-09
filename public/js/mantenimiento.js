@@ -14,7 +14,6 @@ usig.App = (function() {
 
     function reposicionarControles() {
         $('.olControlPanZoomBarUSIG').css('left', 'auto').css('top', '15px').css('right', '15px').css('bottom', 'auto').show();
-        $('#panel-informacion').css('height', '80%');
     }
 
     function crearPanelInfo() {
@@ -52,20 +51,22 @@ usig.App = (function() {
     	}    	
     }
 
+    function filtrarObras(checkbox) {
+        console.log(checkbox);
+    }
+
     function cargarLayers() {
-    	var tiposDeObra = $("input[name=tipo_obra]:checked"),
-    		status = $('#status').val();
+    	var tiposDeObra = $("input[name=tipo_obra]"),
+    		status = $('input[name=status_obra]');
     	removeLayers();
 
     	tiposDeObra.each(function(k, v){
-    		var icon = usig.App.config.layers[$(this).val()].icon,
-    			bgIndex = parseInt(usig.App.config.layers[$(this).val()].bg);
             layers.push(mapa.addVectorLayer('Obras', { 
     		  url: window.location.href + "ordenes?tipo_obra="+ $(this).val(),
     		  format: 'geojson',
     		  symbolizer: {
-    			    externalGraphic: usig.App.config.symbols_url+'n/'+icon+'.png',
-    			    backgroundGraphic: usig.App.config.backgrounds_url+bgIndex+'.png',
+    			    externalGraphic: usig.App.config.symbols_url,
+    			    backgroundGraphic: usig.App.config.backgrounds_url,
     			    pointRadius: usig.App.config.pointRadius
     			  },
     		  minPointRadius: usig.App.config.minPointRadius,
@@ -102,7 +103,7 @@ usig.App = (function() {
             .on('mousedown', stopPropagation)
             .on('dblclick', stopPropagation);
         
-        $("input[name=tipo_obra], #status").change(cargarLayers);
+        $("input[name=tipo_obra], input[name=status_obra]").change(filtrarObras(this));
         
         cargarLayers();
     }

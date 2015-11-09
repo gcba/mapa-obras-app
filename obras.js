@@ -2,15 +2,9 @@ module.exports = {
   getObras: function(connection, tipo_obra, status, callback) {
     var query_obra;
     var query_status = "";
-    switch (tipo_obra) {
-      case "1":
-        query_obra = "clase_orden = 'ACME' || clase_orden = 'ACRE'";
-        break;
-      case "2":
-        query_obra = "clase_orden = 'CAME' || clase_orden = 'CARE'";
-        break;
-    }
-    query_string = "SELECT * FROM ordenes WHERE " + query_obra;
+    
+    query_obra = "clase_orden = '" + tipo_obra + "'";
+    query_string = "SELECT * FROM ordenes WHERE " + query_obra + query_status;
     console.log(query_string)
 
     connection.query(query_string, function(err,rows){

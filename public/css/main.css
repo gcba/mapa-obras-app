@@ -34,8 +34,7 @@ a:hover {
 #panel-informacion {
     top: 15px;
     left: 15px;
-    height: 95%;
-    width: 350px;
+    width: 300px;
     border: 1px solid #ccc;
     border-radius: 4px;
     background: #fff;
@@ -44,39 +43,41 @@ a:hover {
     z-index: 1200;
     overflow: hidden;
     display: none;
-}
-
-
-#panel-informacion .content:after {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    font-size: 12px;
-    font-weight: 700;
-    color: #959595;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    content: "Tipos de obras de mantenimiento";
+    margin-bottom: 20px;
 }
 
 #panel-informacion .content {
 	position: relative;
-	padding: 45px 15px 15px;
+	padding: 0px 15px 0px;
 	border-color: #e5e5e5 #eee #eee;
 	border-style: solid;
 	border-width: 1px 0;
 	-webkit-box-shadow: inset 0 3px 6px rgba(0,0,0,.05);
 	box-shadow: inset 0 3px 6px rgba(0,0,0,.05);
-	height: 100%;
+}
+
+#panel-informacion hr {
+    margin-top: 8px;
+    margin-bottom: 8px; 
+}
+#panel-informacion h4 {
+    margin: 7px 0px;
+    font-weight: 500;
+}
+#panel-informacion h3 {
+    margin: 8px 0px;
+    font-weight: 500;
+    text-transform: uppercase;
 }
 .form-group {
     margin-bottom: 15px;
 }
-label {
+
+#panel-informacion label {
     display: inline-block;
-    font-weight: 700;
     margin-bottom: 5px;
     max-width: 100%;
+    font-size: 12px;
 }
 .form-control {
     background-color: #fff;
@@ -105,16 +106,4 @@ button, input, optgroup, select, textarea {
     color: inherit;
     font: inherit;
     margin: 0;
-}
-
-#panel-informacion .content:after {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    font-size: 12px;
-    font-weight: 700;
-    color: #959595;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    content: "Dependencias Culturales";
 }

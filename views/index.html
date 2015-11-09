@@ -3,31 +3,76 @@
 <div id="panel-informacion" class="informacion">
     <div class="content">
         <form role="form">
+            <h3>Filtros</h3>
+            <hr>
+            <h4>Estado de las obras</h4>
             <div class="form-group">
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" value="1" name="tipo_obra" checked>
-                        Acera
+                        <input type="checkbox" value="1" name="status_obra" checked>
+                        Planificado
                     </label>
                 </div>
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" value="2" name="tipo_obra" checked>
-                        Calzada
+                        <input type="checkbox" value="2" name="status_obra" checked>
+                        En ejecución
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="3" name="status_obra" checked>
+                        Finalizado
                     </label>
                 </div>
             </div>
+
+            <hr>
+            <h4>Tipo de obras</h4>
             <div class="form-group">
-                <label for="status">Status</label>
-                <select class="form-control" id="status">
-                    <option>Cualquiera</option>
-                    <option value="1">Aceptado</option>
-                    <option value="2">Verificado</option>
-                    <option value="3">En proceso</option>
-                    <option value="4">Terminada</option>
-                </select>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="Bacheo" name="tipo_obra" checked>
+                        Bacheo
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="Tapas" name="tipo_obra" checked>
+                        Reposición de tapas
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="Senalizacion" name="tipo_obra" checked>
+                        Pintura y Señalización
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="Materiales" name="tipo_obra" checked>
+                        Retiro de Materiales
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="Vereda" name="tipo_obra" checked>
+                        Arreglos Vereda
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="Cordon" name="tipo_obra" checked>
+                        Arreglos Cordón
+                    </label>
+                </div>
             </div>
         </form>
+
+        <hr>
+
+        <h4>En la comuna</h4>
+        <div id="mapa-contenedor"></div>
     </div>
 </div>
 
@@ -39,16 +84,12 @@ usig.App = usig.App || {};
 
 usig.App.config = {
     server_url: '//epok.buenosaires.gob.ar/',
-    symbols_url: '//static.mapa.buenosaires.gob.ar/symbols/',
-    backgrounds_url: '//static.mapa.buenosaires.gob.ar/images/markers/fondos/',
+    symbols_url: '//static.mapa.buenosaires.gob.ar/symbols/n/obras.png',
+    backgrounds_url: '//static.mapa.buenosaires.gob.ar/images/markers/fondos/9.png',
     baseLayer: "mapabsas_informacion_basica",
     initBounds: [85000,96750,112000,106750],
     pointRadius: 18,
-    minPointRadius: 11,
-    layers: {
-        '1': { name: 'Acera', icon: 'obras', bg: '1'},
-        '2': { name: 'Calzada', icon: 'obras', bg: '4'}
-    }
+    minPointRadius: 11
 };
 
 </script>

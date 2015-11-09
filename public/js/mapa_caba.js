@@ -1,13 +1,9 @@
-var mapaComunas = d3.select("#panel-informacion div.content").append("g")
-                     .attr("id", "mapaCABA");
-
-var svgCABA = d3.select("#mapaCABA")
+var svgCABA = d3.select("#mapa-contenedor")
     .append("svg")
     .attr("width", 300)
-    .attr("height", 300)
-    .attr("x", 500)
-    .attr("y", 200)
-    .attr("style", "margin-top: 20px;");
+    .attr("height", 280)
+    .attr("x", 0)
+    .attr("y", 0);
 
 queue()
     .defer(d3.json, "data/comunas.json")
@@ -23,5 +19,5 @@ function ready(error, comunas, data) {
         .selectAll("path")
         .data(topojson.feature(comunas, comunas.objects.comunas).features)
         .enter().append("path")
-        .attr("d", d3.geo.path().projection(d3.geo.mercator().scale(157000 / 2).center([-58.20000, -34.68102])))       
+        .attr("d", d3.geo.path().projection(d3.geo.mercator().scale(135000 / 2).center([-58.14900, -34.69500])))       
 }   
