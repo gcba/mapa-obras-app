@@ -38,7 +38,7 @@ usig.App = (function() {
     	}
     }    
 
-    function removeLayers() {
+    function hideLayerObra(name) {
     	if (layers.length > 0) {
     		for(var i=0,l=layers.length;i<l;i++) {
         		try {
@@ -53,27 +53,32 @@ usig.App = (function() {
 
     function filtrarObras(checkbox) {
         console.log(checkbox);
+        console.log(layers);
     }
 
-    function cargarLayers() {
+    function inicializarLayers() {
     	var tiposDeObra = $("input[name=tipo_obra]"),
-    		status = $('input[name=status_obra]');
-    	removeLayers();
+            status = $('input[name=status_obra]');
+    	
 
-    	tiposDeObra.each(function(k, v){
-            layers.push(mapa.addVectorLayer('Obras', { 
-    		  url: window.location.href + "ordenes?tipo_obra="+ $(this).val(),
-    		  format: 'geojson',
-    		  symbolizer: {
-    			    externalGraphic: usig.App.config.symbols_url,
-    			    backgroundGraphic: usig.App.config.backgrounds_url,
-    			    pointRadius: usig.App.config.pointRadius
-    			  },
-    		  minPointRadius: usig.App.config.minPointRadius,
-    		  popup: true,
-    		  onClick: clickHandler
-    		}));
-    	});
+        tiposDeObra.each(function(){
+            var tipo = $(this).val();
+            status.each(function(){
+                var nameLayer = "obras" + tipo + $(this).val();
+                layers.push(mapa.addVectorLayer(nameLayer, { 
+                    url: window.location.href + "ordenes?tipo_obra="+ tipo + "&status=" + $(this).val(),
+                    format: 'geojson',
+                    symbolizer: {
+                        externalGraphic: usig.App.config.symbols_url,
+                        backgroundGraphic: usig.App.config.backgrounds_url,
+                        pointRadius: usig.App.config.pointRadius
+                    },
+                    minPointRadius: usig.App.config.minPointRadius,
+                    popup: true,
+                    onClick: clickHandler
+                })); 
+            });
+        });
     }
 
     function stopPropagation(ev) {
@@ -103,9 +108,11 @@ usig.App = (function() {
             .on('mousedown', stopPropagation)
             .on('dblclick', stopPropagation);
         
-        $("input[name=tipo_obra], input[name=status_obra]").change(filtrarObras(this));
+        $("input[name=tipo_obra], input[name=status_obra]").change(function() {
+            filtrarObras($(this));
+        });
         
-        cargarLayers();
+        inicializarLayers();
     }
 
     return {
@@ -115,6 +122,9 @@ usig.App = (function() {
 
             // El div del mapa tiene que ocupar toda la ventana
             redimensionarMapa();
+
+            // Destildeo los filtros
+            $("input[type='checkbox']").attr("checked", false)
 
             var mapOptions = {
                 divId: 'mapa',
