@@ -59,7 +59,6 @@ usig.App = (function() {
     function inicializarLayers() {
     	var tiposDeObra = $("input[name=tipo_obra]"),
             status = $('input[name=status_obra]');
-    	
 
         tiposDeObra.each(function(){
             var tipo = $(this).val();
@@ -102,6 +101,21 @@ usig.App = (function() {
             reposicionarControles.defer(200);
         });
         
+        // Zoomear cuando el usuario apreta las flechitas
+        $(document).keydown(function(e) {
+            switch(e.which) {
+                case 189: // minus
+                    mapa.api.zoomOut();
+                    break;
+
+                case 187: // plus
+                    mapa.api.zoomIn();
+                    break;
+
+                default: return; // exit this handler for other keys
+            }
+        });
+
         // Esto es para evitar que los clicks sobre los elementos flotantes sobre el
         // mapa sean capturados por el mapa y generen movimientos no previstos        
         $('#b, #mapSelector, #panel-informacion, .selectboxit-container')
@@ -124,7 +138,7 @@ usig.App = (function() {
             redimensionarMapa();
 
             // Destildeo los filtros
-            $("input[type='checkbox']").attr("checked", false)
+            $("input[type='checkbox']").attr("checked", false);
 
             var mapOptions = {
                 divId: 'mapa',
