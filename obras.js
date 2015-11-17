@@ -28,13 +28,18 @@ module.exports = {
     var mesPasado = minusYear + "-" + minusMonth + "-" + day;
     var mesSiguiente = plusYear + "-" + plusMonth + "-" + day;
 
-    query_obra = "(SELECT tipo_id FROM tipos_obra WHERE name='" + tipo_obra + "')";
-    query_status = "(SELECT status_id FROM status_obra WHERE name='" + status + "')";
-    query_fechas = "(fecha_ini_extremo > '" + mesPasado + "' AND fecha_ini_extremo < '" + mesSiguiente + "') OR (fecha_fin_extremo > '" + mesPasado + "' AND fecha_fin_extremo < '" + mesSiguiente + "')"; 
-    query_nro_orden = "GROUP BY nro_orden"
+    query_fechas = "(ORD.fecha_ini_extremo > '" + mesPasado + "' AND ORD.fecha_ini_extremo < '" + mesSiguiente + "') OR (ORD.fecha_fin_extremo > '" + mesPasado + "' AND ORD.fecha_fin_extremo < '" + mesSiguiente + "')"; 
 
-    query_string = "SELECT * FROM ordenes WHERE tipo_obra_id=" + query_obra + " AND status_id=" + query_status + " AND " + query_fechas + " " + query_nro_orden;
-    console.log(query_string);
+    query_string = "SELECT ORD.geo_x, ORD.geo_y, ORD.nro_orden, ORD.ubic_tecnica_desc, ORD.fecha_ini_extremo, ORD.fecha_fin_extremo, ORD.clave_modelo, TOB.name AS 'tipo_obra', SOB.name AS 'status_obra' " +
+                   "FROM ordenes AS ORD " +
+                   "INNER JOIN tipos_obra AS TOB " +
+                   "ON ORD.tipo_obra_id = TOB.tipo_id " +
+                   "INNER JOIN status_obra AS SOB " +
+                   "ON ORD.status_id = SOB.status_id " + 
+                   "WHERE TOB.name = '" + tipo_obra + "' " + 
+                   "AND SOB.name = '" + status + "' " +
+                   "AND (" + query_fechas + ") " +
+                   "GROUP BY ORD.nro_orden";                 
 
     connection.query(query_string, function(err,rows){
       // Si hubo algo mal en la conexion o query a la base, 
@@ -43,14 +48,19 @@ module.exports = {
         callback(err, null);
         return;
       }
-      console.log('Data received from Db:');
-      console.log(rows);
+
+      console.log("Se encontraron " + rows.length + " resultados de " + tipo_obra + " " + status);
 
       var geojson = {};
       geojson['type'] = 'FeatureCollection';
       geojson['features'] = [];
        
       for (var i=0; i<rows.length; i++) {
+        var fechaInicio = new Date(rows[i]["fecha_ini_extremo"]);
+        var fechaFin = new Date(rows[i]["fecha_fin_extremo"]);
+        var inicio = ("0" + fechaInicio.getDate()).slice(-2) + "/" + ("0" + (fechaInicio.getMonth() + 1)).slice(-2) + "/" + fechaInicio.getFullYear();
+        var fin = ("0" + fechaFin.getDate()).slice(-2) + "/" + ("0" + (fechaFin.getMonth() + 1)).slice(-2) + "/" + fechaFin.getFullYear();
+        
         var newFeature = {
           "type": "Feature",
           "geometry": {
@@ -58,11 +68,11 @@ module.exports = {
             "coordinates": [rows[i]["geo_x"], rows[i]["geo_y"]]
           },
           "properties": {
-            "clase_orden": rows[i]["clase_orden"],
-            "clave_modelo": rows[i]["clave_modelo"],
-            "fecha_inicio": rows[i]["fecha_ini_extremo"],
-            "fecha_fin": rows[i]["fecha_fin_extremo"],
-            "status": rows[i]["status_usuario"]
+            "direccion": rows[i]["ubic_tecnica_desc"].split("-")[0],
+            "fecha_inicio": inicio,
+            "fecha_fin": fin,
+            "status": rows[i]["status_obra"],
+            "tipo_obra": rows[i]["tipo_obra"]
           }
         }
         geojson['features'].push(newFeature);

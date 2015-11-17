@@ -47,8 +47,8 @@ app.get('/ordenes', function (req, res) {
       if (error) {
         throw error;
       }
-      console.log("\nJSON getting sent to the front: ")
-      console.log(data);
+      // console.log("\nJSON getting sent to the front: ")
+      // console.log(data);
       res.send(data);
   });
 });

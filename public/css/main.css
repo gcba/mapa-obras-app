@@ -1,8 +1,10 @@
 @charset "UTF-8";
 /* CSS Document */
 
+@import url("http://fonts.googleapis.com/css?family=Roboto:300,400,500,700");
+
 body, .btn, input {
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif!important;
+	font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
 
 body {
@@ -29,6 +31,13 @@ a:hover {
 .indicator {
 	margin: 20px;
 	color: #333;
+}
+
+ul.listado {
+    width: 280px; 
+    list-style-type: none; 
+    margin: 5px 0; 
+    padding: 0;
 }
 
 #panel-informacion {

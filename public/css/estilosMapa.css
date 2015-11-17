@@ -8,3 +8,59 @@
     stroke: #737373;
 }
 
+div.popover {
+    width: 300px !important;
+}
+
+div.popover div.content-popup {
+    border-radius: 6px !important;
+    border-top: 30px solid #ffd600 !important;
+    margin: -1px !important;
+}
+
+div.detail-container {
+    width: 100%;
+    padding: 7px 5px;
+    border-bottom: 1px solid #dbdbdb;
+}
+div.popup-icon {
+    width: 15%;
+    float: left;
+}
+div.popup-content {
+    width: 85%;
+    float: left;
+}
+div.popup-icon span{
+    content:"";
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    vertical-align: top;
+}
+span#icon-dir {
+    background: url("/img/svg/icon-mark.svg") no-repeat;
+    background-position-x: 3px; 
+}
+span#icon-desde {
+    background: url("/img/svg/icon-cal.svg") no-repeat;
+}
+div.titulos {
+    font-weight: 500;
+}
+
+div.titulos span, div.valores span { width: 96px; }
+
+div.titulos span.desde, div.valores span.desde { float: left; }
+div.titulos span.hasta, div.valores span.hasta { float: right; }
+
+div.explicativo {
+    font-size: 11px;
+    line-height: 13px;
+    color: #9b9b9b;
+    padding-top: 5px;
+}
+
+.clear {
+    clear: both;
+}

@@ -21,20 +21,58 @@ usig.App = (function() {
         $("#panel-informacion").show();
     }
 
+    function toTitleCase(str) {
+        return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+    }
+
+    function generatePopup(propiedades) {
+        console.log(propiedades);
+        var content = "";
+        
+        // Dirección de la obra
+        var direccion = "<div class='detail-container'><div class='popup-icon'><span id='icon-dir'></span></div>" + 
+                        "<div class='popup-content' id='content-dir'><span id='direccion-obra'>" +
+                        toTitleCase(propiedades.direccion) +  
+                        "</span></div><div class='clear'></div></div>";
+        content += direccion;
+        
+        // Desde y hasta de la obra
+        var desdeHasta = "<div class='detail-container'><div class='popup-icon'><span id='icon-desde'></span></div>" + 
+                         "<div class='popup-content' id='content-desde'>" + 
+                         "<div class='titulos'><span class='desde'>Inicio de obra:</span>" + 
+                         "<span class='hasta'>Fin de obra:</span></div>" + 
+                         "<div class='valores clear'><span class='desde'>" + 
+                         propiedades.fecha_inicio + "</span><span class='hasta'>" +
+                         propiedades.fecha_fin + "</span></div>" + 
+                         "<div class='explicativo clear'>" +
+                         "<span>Las fechas son estimativas, considerando los factores externos que pueden afectar la obra.</span>" + 
+                         "</div></div><div class='clear'></div></div>";
+        content += desdeHasta;
+
+        // Estado de la obra
+
+        return content;
+    }
+
     function clickHandler(e, popup) {
     	if (popup) {
-    		$div = $(popup.contentDiv);
-            var content = '<ul style="width: 300px; list-style-type: none; margin: 5px 0; padding: 0;">';
-            $.each(e.feature.attributes, function(k, v) {
-                if ((k == "fecha_inicio" || k == "fecha_fin") && v != null) {
-                    v = v.toString().split("T")[0]
-                }
-                content+='<li><b>'+k+'</b>: '+v+'</li>';
-            });
-            content+='</ul>';
-            $div.append(content);
+            // CSS del popup
+            popup.div.style.borderTop = "30px solid #ffd600";
+            popup.div.style.background = "#fafafa";
+            popup.div.style.fontFamily = "Roboto";
+            popup.div.style.lineHeight = "18px";
+            popup.div.style.color = "#424242";
+
+            var content=generatePopup(e.feature.attributes);
+            
+            popup.setContentHTML(content);
             popup.updateSize();
-    		popup.show();
+
+            // modificar altura del popup para sumarle los 30px de borde
+            var heightPopup = popup.size.h;
+            popup.div.style.height = (heightPopup + 30) + "px";
+
+            popup.show();
     	}
     }    
 
@@ -51,9 +89,59 @@ usig.App = (function() {
     	}    	
     }
 
-    function filtrarObras(checkbox) {
-        console.log(checkbox);
-        console.log(layers);
+    function filtrarObras() {
+        
+        var tiposDeObra = $("input[name=tipo_obra]");
+        var statusBx = $("input[name=status_obra]");
+        
+        var mostrarTodosStatus = false, 
+            mostrarTodosTipoObra = false;
+
+        // Si estan todos destilados, no hay filtro!
+        var statusUnchecked = $("input[name=status_obra]:not(:checked)");
+        if ( statusUnchecked.length == statusBx.length ) {
+            mostrarTodosStatus = true;
+        }
+
+        var tiposDeObraUnchecked = $("input[name=tipo_obra]:not(:checked)");
+        // Si estan todos destildados, mostrarTodos!
+        if ( tiposDeObraUnchecked.length == tiposDeObra.length ) {
+            mostrarTodosTipoObra = true;
+        }
+        
+        // Loopeamos por todos y nos vamos fijando si mostramos o escondemos
+        statusBx.each(function() {
+            var statusChecked = $(this).prop("checked");
+            var statusVal = $(this).val();
+
+            tiposDeObra.each(function() {
+                var tipoObraChecked = $(this).prop("checked");
+                var tipoObraVal = $(this).val();
+
+                var nameLayer = "obras" + tipoObraVal + statusVal;
+                var capaFiltro = mapa.api.getLayersByName(nameLayer)[0];
+                
+                // Cuando mostrar la capa
+                if ((statusChecked && tipoObraChecked) || 
+                    (statusChecked && mostrarTodosTipoObra) ||
+                    (mostrarTodosStatus && tipoObraChecked) ||
+                    (mostrarTodosStatus && mostrarTodosTipoObra)) 
+                {
+                    if (!capaFiltro.getVisibility()) {
+                        capaFiltro.setVisibility(true);
+                    }
+                }
+
+                // Cuando esconder la capa
+                if ((!statusChecked && !mostrarTodosStatus) || 
+                    (!tipoObraChecked && !mostrarTodosTipoObra)) 
+                {
+                    if (capaFiltro.getVisibility()) {
+                        capaFiltro.setVisibility(false);
+                    }
+                }
+            });
+        });
     }
 
     function inicializarLayers() {
@@ -69,7 +157,6 @@ usig.App = (function() {
                     format: 'geojson',
                     symbolizer: {
                         externalGraphic: usig.App.config.symbols_url,
-                        backgroundGraphic: usig.App.config.backgrounds_url,
                         pointRadius: usig.App.config.pointRadius
                     },
                     minPointRadius: usig.App.config.minPointRadius,
@@ -123,7 +210,7 @@ usig.App = (function() {
             .on('dblclick', stopPropagation);
         
         $("input[name=tipo_obra], input[name=status_obra]").change(function() {
-            filtrarObras($(this));
+            filtrarObras();
         });
         
         inicializarLayers();
