@@ -21,6 +21,21 @@ usig.App = (function() {
         $("#panel-informacion").show();
     }
 
+    function cargarInfoComunas() {
+        // Cargar info de comunas al mapa
+        if (mapa) {
+             $.ajax({
+                type: "GET",
+                url: "../data/comunas-centroide.csv",
+                dataType: "text",
+                success: function(data) { 
+                    var comunas = $.csv.toObjects(data, {"separator": ";"});
+                    mapa.comunas = comunas;
+                }
+             });
+        }
+    }
+
     function toTitleCase(str) {
         return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
     }
@@ -183,6 +198,9 @@ usig.App = (function() {
         // Cambia la ubicaciÃ³n del control de zoom y agranda el panel de info
         reposicionarControles();
 
+        // Cargar centroides 
+        cargarInfoComunas();
+
         $(window).on('resize', function() {
             redimensionarMapa();
             reposicionarControles.defer(200);
@@ -202,6 +220,24 @@ usig.App = (function() {
                 default: return; // exit this handler for other keys
             }
         });
+
+        // zoom in en la comuna
+        d3.selectAll("g.caba path")
+            .on("click", function(d) {
+                // estilos de hover, color, etc.
+                if(!d3.select(this).classed("zoom")) {
+                    d3.select(this).classed("zoom", true);
+                }
+                var comunas = d3.selectAll("g.caba path");
+                comunas.filter(function (x) { return d.properties.comuna != x.properties.comuna; })
+                    .classed("zoom", false)
+                    .style("fill", "#FAFAFA");    
+
+                var comuna = d.properties.comuna;
+                var comuna_x = mapa.comunas[comuna-1].x;
+                var comuna_y = mapa.comunas[comuna-1].y;
+                mapa.api.setCenter([comuna_x, comuna_y], 4);
+            });
 
         // Esto es para evitar que los clicks sobre los elementos flotantes sobre el
         // mapa sean capturados por el mapa y generen movimientos no previstos        
