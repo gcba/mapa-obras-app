@@ -78,6 +78,11 @@ usig.App = (function() {
             popup.div.style.height = (heightPopup + 30) + "px";
 
             popup.show();
+
+            $("button#dejar-opinion").click(function() {
+                $("#detalle-obra").hide();
+                $("div#form-opinion").show();
+            });
     	}
     }    
 
@@ -180,22 +185,7 @@ usig.App = (function() {
         }            
     }
 
-    function inicializar(onReady) {        
-
-        // Creacion de los elementos flotantes sobre el mapa
-        crearPanelInfo();            
-
-        // Cambia la ubicaciÃ³n del control de zoom y agranda el panel de info
-        reposicionarControles();
-
-        // Cargar centroides 
-        cargarInfoComunas();
-
-        $(window).on('resize', function() {
-            redimensionarMapa();
-            reposicionarControles.defer(200);
-        });
-        
+    function inicializarKeyDowns() {
         // Zoomear cuando el usuario apreta las flechitas
         $(document).keydown(function(e) {
             switch(e.which) {
@@ -210,7 +200,9 @@ usig.App = (function() {
                 default: return; // exit this handler for other keys
             }
         });
+    }
 
+    function inicializarClickComunas() {
         // zoom in en la comuna
         d3.selectAll("g.caba path")
             .on("click", function(d) {
@@ -229,6 +221,26 @@ usig.App = (function() {
                 mapa.api.setCenter([comuna_x, comuna_y], 4);
             });
 
+    }
+
+    function inicializar(onReady) {        
+
+        // Creacion de los elementos flotantes sobre el mapa
+        crearPanelInfo();            
+        // Cambia la ubicaciÃ³n del control de zoom y agranda el panel de info
+        reposicionarControles();
+        // Cargar centroides 
+        cargarInfoComunas();
+        // Zoom en comunas
+        inicializarClickComunas();
+        // Zoom in/out/comunas
+        inicializarKeyDowns();
+
+        $(window).on('resize', function() {
+            redimensionarMapa();
+            reposicionarControles.defer(200);
+        });
+        
         // Esto es para evitar que los clicks sobre los elementos flotantes sobre el
         // mapa sean capturados por el mapa y generen movimientos no previstos        
         $('#b, #mapSelector, #panel-informacion, .selectboxit-container')

@@ -67,6 +67,10 @@ div.explicativo {
     padding-top: 5px;
 }
 
+div.feedback { margin-top: 10px; text-align: center; }
+div.feedback span { margin-bottom: 5px; display: inline-block; }
+
+div#form-opinion { display: none; }
 .clear {
     clear: both;
 }
