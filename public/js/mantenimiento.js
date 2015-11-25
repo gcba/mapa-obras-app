@@ -41,30 +41,20 @@ usig.App = (function() {
     }
 
     function generatePopup(propiedades) {
-        console.log(propiedades);
-        var content = "";
-        
-        // Dirección de la obra
-        var direccion = "<div class='detail-container'><div class='popup-icon'><span id='icon-dir'></span></div>" + 
-                        "<div class='popup-content' id='content-dir'><span id='direccion-obra'>" +
-                        toTitleCase(propiedades.direccion) +  
-                        "</span></div><div class='clear'></div></div>";
-        content += direccion;
-        
-        // Desde y hasta de la obra
-        var desdeHasta = "<div class='detail-container'><div class='popup-icon'><span id='icon-desde'></span></div>" + 
-                         "<div class='popup-content' id='content-desde'>" + 
-                         "<div class='titulos'><span class='desde'>Inicio de obra:</span>" + 
-                         "<span class='hasta'>Fin de obra:</span></div>" + 
-                         "<div class='valores clear'><span class='desde'>" + 
-                         propiedades.fecha_inicio + "</span><span class='hasta'>" +
-                         propiedades.fecha_fin + "</span></div>" + 
-                         "<div class='explicativo clear'>" +
-                         "<span>Las fechas son estimativas, considerando los factores externos que pueden afectar la obra.</span>" + 
-                         "</div></div><div class='clear'></div></div>";
-        content += desdeHasta;
+        console.log(propiedades);    
 
-        // Estado de la obra
+        var dataPopup = { 
+            "direccion": toTitleCase(propiedades.direccion), 
+            "fecha_inicio": propiedades.fecha_inicio,
+            "fecha_fin": propiedades.fecha_fin,
+            "status": propiedades.status,
+            "tipo_obra": propiedades.tipo_obra,
+            "finalizada": propiedades.status == "Finalizado"
+        };
+
+        var source   = $("#tooltip-template").html();
+        var template = Handlebars.compile(source);
+        var content = template(dataPopup);
 
         return content;
     }
