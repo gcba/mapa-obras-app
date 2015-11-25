@@ -39,7 +39,7 @@ module.exports = {
                    "WHERE TOB.name = '" + tipo_obra + "' " + 
                    "AND SOB.name = '" + status + "' " +
                    "AND (" + query_fechas + ") " +
-                   "GROUP BY ORD.nro_orden";                 
+                   "GROUP BY ORD.geo_x, ORD.geo_y, ORD.nro_orden, ORD.clave_modelo, ORD.ubic_tecnica_desc, ORD.fecha_ini_extremo, ORD.fecha_fin_extremo";                 
 
     connection.query(query_string, function(err,rows){
       // Si hubo algo mal en la conexion o query a la base, 
@@ -61,6 +61,11 @@ module.exports = {
         var inicio = ("0" + fechaInicio.getDate()).slice(-2) + "/" + ("0" + (fechaInicio.getMonth() + 1)).slice(-2) + "/" + fechaInicio.getFullYear();
         var fin = ("0" + fechaFin.getDate()).slice(-2) + "/" + ("0" + (fechaFin.getMonth() + 1)).slice(-2) + "/" + fechaFin.getFullYear();
         
+        var direccion = "";
+        if (rows[i]["ubic_tecnica_desc"]) {
+          direccion = rows[i]["ubic_tecnica_desc"].split("-")[0];
+        }
+
         var newFeature = {
           "type": "Feature",
           "geometry": {
@@ -68,13 +73,14 @@ module.exports = {
             "coordinates": [rows[i]["geo_x"], rows[i]["geo_y"]]
           },
           "properties": {
-            "direccion": rows[i]["ubic_tecnica_desc"].split("-")[0],
+            "direccion": direccion,
             "fecha_inicio": inicio,
             "fecha_fin": fin,
             "status": rows[i]["status_obra"],
             "tipo_obra": rows[i]["tipo_obra"]
           }
         }
+        
         geojson['features'].push(newFeature);
       }
       var json = JSON.stringify(geojson);

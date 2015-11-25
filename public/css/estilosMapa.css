@@ -8,6 +8,10 @@
     stroke: #737373;
 }
 
+.zoom {
+    fill: #9B9B9B !important;
+}
+
 div.popover {
     width: 300px !important;
 }

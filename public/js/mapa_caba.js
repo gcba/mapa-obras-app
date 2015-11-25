@@ -19,5 +19,14 @@ function ready(error, comunas, data) {
         .selectAll("path")
         .data(topojson.feature(comunas, comunas.objects.comunas).features)
         .enter().append("path")
-        .attr("d", d3.geo.path().projection(d3.geo.mercator().scale(135000 / 2).center([-58.14900, -34.69500])))       
+        .attr("d", d3.geo.path().projection(d3.geo.mercator().scale(135000 / 2).center([-58.14900, -34.69500])))
+        .style("fill", "#FAFAFA")
+        .on("mouseover", function(d) {
+            d3.select(this).style("fill", "#DBDBDB");
+        })
+        .on("mouseout", function() {
+            if(!d3.select(this).classed("zoom")) {
+                d3.select(this).style("fill", "#FAFAFA");
+            }
+        });
 }   
