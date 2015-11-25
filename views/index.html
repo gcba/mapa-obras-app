@@ -2,70 +2,107 @@
 
 <!-- Template Tooltip -->
 <script id="tooltip-template" type="text/x-handlebars-template">
-<!-- Seccion Direccion -->
-<div class='detail-container'>
-    <div class='popup-icon'>
-        <span id='icon-dir'></span>
-    </div>
-    <div class='popup-content' id='content-dir'>
-        <span id='direccion-obra'>\{{direccion}}</span>
-    </div>
-    <div class='clear'></div>
-</div>
 
-<!-- Seccion Desde/Hasta -->      
-<div class='detail-container'>
-    <div class='popup-icon'>
-        <span id='icon-desde'></span>
+<div id='detalle-obra'>
+    <!-- Seccion Direccion -->
+    <div class='detail-container'>
+        <div class='popup-icon'>
+            <span id='icon-dir'></span>
+        </div>
+        <div class='popup-content' id='content-dir'>
+            <span id='direccion-obra'>\{{direccion}}</span>
+        </div>
+        <div class='clear'></div>
     </div>
-    <div class='popup-content' id='content-desde'>
-        <div class='titulos'>
-            <span class='desde'>Inicio de obra:</span>
-            <span class='hasta'>Fin de obra:</span>
-        </div>
-        <div class='valores'>
-            <span class='desde'>\{{fecha_inicio}}</span>
-            <span class='hasta'>\{{fecha_fin}}</span>
-            <div class="clear"></div>
-        </div>
-        <div class='explicativo clear'>
-            <span>Las fechas son estimativas, considerando los factores externos que pueden afectar la obra.</span>
-        </div>
-    </div>
-    <div class='clear'></div>
-</div>
 
-<!-- Seccion Estado -->      
-<div class='detail-container'>
-    <div class='popup-icon'>
-        \{{#if finalizada}}
-        <span id='icon-finalizada'></span>
-        \{{else}}
-        <span id='icon-estado'></span>
-        \{{/if}}
+    <!-- Seccion Desde/Hasta -->      
+    <div class='detail-container'>
+        <div class='popup-icon'>
+            <span id='icon-desde'></span>
+        </div>
+        <div class='popup-content' id='content-desde'>
+            <div class='titulos'>
+                <span class='desde'>Inicio de obra:</span>
+                <span class='hasta'>Fin de obra:</span>
+            </div>
+            <div class='valores'>
+                <span class='desde'>\{{fecha_inicio}}</span>
+                <span class='hasta'>\{{fecha_fin}}</span>
+                <div class="clear"></div>
+            </div>
+            <div class='explicativo clear'>
+                <span>Las fechas son estimativas, considerando los factores externos que pueden afectar la obra.</span>
+            </div>
+        </div>
+        <div class='clear'></div>
     </div>
-    <div class='popup-content' id='content-estado'>
-        <div class='titulos'>
-            <span>Estado:</span>
-        </div>
-        <div class='valores'>
-            <span>\{{status}}</span>
-            <div class="clear"></div>
-        </div>
-        <div class='titulos'>
-            <span>Tipo de Obra:</span>
-        </div>
-        <div class='valores'>
-            <span>\{{tipo_obra}}</span>
-            <div class="clear"></div>
-        </div>
-    </div>
-    <div class='clear'></div>
-</div>
 
-\{{#if finalizada}}
-<span>Obra finalizada</span>
-\{{/if}}
+    <!-- Seccion Estado -->      
+    <div class='detail-container'>
+        <div class='popup-icon'>
+            \{{#if finalizada}}
+            <span id='icon-finalizada'></span>
+            \{{else}}
+            <span id='icon-estado'></span>
+            \{{/if}}
+        </div>
+        <div class='popup-content' id='content-estado'>
+            <div class='titulos'>
+                <span>Estado:</span>
+            </div>
+            <div class='valores'>
+                <span>\{{status}}</span>
+                <div class="clear"></div>
+            </div>
+            <div class='titulos'>
+                <span>Tipo de Obra:</span>
+            </div>
+            <div class='valores'>
+                <span>\{{tipo_obra}}</span>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class='clear'></div>
+    </div>
+
+    <!-- Seccion Obra Finalizada -->
+    \{{#if finalizada}}
+    <div class='feedback'>
+        <span>¿Estás conforme con esta obra?</span>
+        <button type="button" class="btn btn-primary btn-sm" id='dejar-opinion'>Danos tu opinión</button>
+    </div>
+    \{{/if}}
+</div> <!-- detalle-obra -->   
+
+<div id="form-opinion">
+    <div id='volver-detaller'><span>Volver</span></div>
+    
+    <form>
+        <div class='detail-container'>
+            <label for="nombre">Nombre y Apellido</label>
+            <input type="text" class="form-control" id="nombre" placeholder="Juan Pérez">
+            
+            <label for="email">Dirección de correo electrónico</label>
+            <input type="email" class="form-control" id="email" placeholder="juan.perez@gmail.com">
+        </div>
+
+        <div class='detail-container'>
+            <label class='radio-inline'>
+                <input type="radio" name="conforme" id="conforme-si" value="si" checked>Sí
+            </label>
+            <label>
+                <input type="radio" name="conforme" id="confirme-no" value="no">No
+            </label>
+            
+            <div class="clear"></div>
+            
+            <label for="comentario">Comentarios:</label>
+            <textarea class="form-control" id="comentario" rows="3">Max. 200 caracteres</textarea>
+
+            <button type="submit" class="btn btn-primary">Enviar Opinión</button>
+        </div>
+    </form>
+</div> 
 
 </script>
 
