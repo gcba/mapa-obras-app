@@ -75,7 +75,7 @@
 </div> <!-- detalle-obra -->   
 
 <div id="form-opinion">
-    <div id='volver-detaller'><span>Volver</span></div>
+    <div><span id='volver-detalle'>Volver</span></div>
     
     <form>
         <div class='detail-container'>
@@ -86,20 +86,23 @@
             <input type="email" class="form-control" id="email" placeholder="juan.perez@gmail.com">
         </div>
 
-        <div class='detail-container'>
+        
+        <label for="radios">¿Estás conforme con esta obra?</label>
+        <div id="radios">
             <label class='radio-inline'>
                 <input type="radio" name="conforme" id="conforme-si" value="si" checked>Sí
             </label>
-            <label>
+            <label class='radio-inline'>
                 <input type="radio" name="conforme" id="confirme-no" value="no">No
             </label>
-            
-            <div class="clear"></div>
-            
-            <label for="comentario">Comentarios:</label>
-            <textarea class="form-control" id="comentario" rows="3">Max. 200 caracteres</textarea>
+        </div>
+        <div class="clear"></div>
+        
+        <label for="comentario">Comentarios:</label>
+        <textarea class="form-control" id="comentario" rows="6">Max. 200 caracteres</textarea>
 
-            <button type="submit" class="btn btn-primary">Enviar Opinión</button>
+        <div class='feedback'>
+            <button type="button" class="btn btn-primary btn-sm" id='enviar-opinion'>Enviar Opinión</button>
         </div>
     </form>
 </div> 

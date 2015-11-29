@@ -71,6 +71,14 @@ div.feedback { margin-top: 10px; text-align: center; }
 div.feedback span { margin-bottom: 5px; display: inline-block; }
 
 div#form-opinion { display: none; }
+
+div#form-opinion input { margin: 5px 0px; }
+label.radio-inline input { margin: 0px 5px !important; }
+div#radios { padding: 7px 0px;}
+
+#volver-detalle { font-size: 11px; }
+#volver-detalle:hover { cursor: pointer; }
+
 .clear {
     clear: both;
 }
