@@ -83,6 +83,11 @@ usig.App = (function() {
                 $("#detalle-obra").hide();
                 $("div#form-opinion").show();
             });
+
+            $("#volver-detalle, #enviar-opinion").click(function() {
+                $("#detalle-obra").show();
+                $("div#form-opinion").hide();
+            });
     	}
     }    
 
